@@ -6,10 +6,15 @@ namespace OffloadProject\Navigation\Support;
 
 use Closure;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Guard;
 use OffloadProject\Navigation\Data\NavigationItem;
 
 final class ItemVisibilityResolver
 {
+    public function __construct(
+        private readonly Guard $auth
+    ) {}
+
     /**
      * Check if a navigation item should be visible.
      */
@@ -19,11 +24,7 @@ final class ItemVisibilityResolver
             return false;
         }
 
-        if (! $this->passesGateCheck($item)) {
-            return false;
-        }
-
-        return true;
+        return $this->passesGateCheck($item);
     }
 
     /**
@@ -53,7 +54,7 @@ final class ItemVisibilityResolver
 
         $user = $this->getUser();
 
-        if (! $user) {
+        if ($user === null) {
             return false;
         }
 
@@ -71,6 +72,6 @@ final class ItemVisibilityResolver
      */
     private function getUser(): ?Authenticatable
     {
-        return auth()->user();
+        return $this->auth->user();
     }
 }

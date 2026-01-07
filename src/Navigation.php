@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace OffloadProject\Navigation;
 
 use Closure;
-use Exception;
+use Illuminate\Routing\Exceptions\UrlGenerationException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use OffloadProject\Navigation\Contracts\IconCompilerInterface;
 use OffloadProject\Navigation\Contracts\NavigationInterface;
 use OffloadProject\Navigation\Data\NavigationItem;
@@ -42,12 +44,14 @@ final class Navigation implements NavigationInterface
     }
 
     /**
-     * @param  array<string, mixed>  $routeParams
+     * Get the navigation items as an array tree.
+     *
+     * @param  array<string, mixed>  $routeParams  Route parameters for URL generation
      * @param  string|null  $currentRoute  Current route name (defaults to request route)
      * @param  array<string, mixed>  $currentRouteParams  Current route parameters (defaults to request params)
      * @return array<int, array<string, mixed>>
      */
-    public function toTree(
+    public function items(
         array $routeParams = [],
         ?string $currentRoute = null,
         array $currentRouteParams = []
@@ -59,12 +63,68 @@ final class Navigation implements NavigationInterface
     }
 
     /**
+     * Get the navigation items as an array tree.
+     *
+     * @deprecated Use items() instead. Will be removed in v2.0.
+     *
+     * @param  array<string, mixed>  $routeParams
+     * @param  string|null  $currentRoute  Current route name (defaults to request route)
+     * @param  array<string, mixed>  $currentRouteParams  Current route parameters (defaults to request params)
+     * @return array<int, array<string, mixed>>
+     */
+    public function toTree(
+        array $routeParams = [],
+        ?string $currentRoute = null,
+        array $currentRouteParams = []
+    ): array {
+        trigger_deprecation(
+            'offload-project/laravel-navigation',
+            '1.1',
+            'Method "%s::toTree()" is deprecated, use "items()" instead.',
+            self::class
+        );
+
+        return $this->items($routeParams, $currentRoute, $currentRouteParams);
+    }
+
+    /**
+     * Get the breadcrumb trail for a route.
+     *
+     * @param  string|null  $routeName  Route name (defaults to current route)
+     * @param  array<string, mixed>  $routeParams  Route parameters
+     * @return array<int, array<string, mixed>>
+     */
+    public function breadcrumbs(?string $routeName = null, array $routeParams = []): array
+    {
+        $routeName ??= request()->route()?->getName();
+
+        if ($routeName === null) {
+            return [];
+        }
+
+        $routeParams = $routeParams ?: (request()->route()?->parameters() ?? []);
+
+        return $this->findBreadcrumbPath($this->items, $routeName, [], $routeParams);
+    }
+
+    /**
+     * Get the breadcrumb trail for a route.
+     *
+     * @deprecated Use breadcrumbs() instead. Will be removed in v2.0.
+     *
      * @param  array<string, mixed>  $routeParams
      * @return array<int, array<string, mixed>>
      */
     public function getBreadcrumbs(string $currentRouteName, array $routeParams = []): array
     {
-        return $this->findBreadcrumbPath($this->items, $currentRouteName, [], $routeParams);
+        trigger_deprecation(
+            'offload-project/laravel-navigation',
+            '1.1',
+            'Method "%s::getBreadcrumbs()" is deprecated, use "breadcrumbs()" instead.',
+            self::class
+        );
+
+        return $this->breadcrumbs($currentRouteName, $routeParams);
     }
 
     /**
@@ -137,7 +197,7 @@ final class Navigation implements NavigationInterface
             return;
         }
 
-        logger()->warning(
+        Log::warning(
             "Navigation item skipped: Items with wildcard params or dynamic labels should use 'breadcrumbOnly' => true",
             [
                 'navigation' => $this->name,
@@ -296,9 +356,32 @@ final class Navigation implements NavigationInterface
     {
         try {
             return route($routeName, $params);
-        } catch (Exception) {
+        } catch (UrlGenerationException $e) {
+            $this->logRouteError($routeName, $e->getMessage());
+
+            return '#';
+        } catch (InvalidArgumentException $e) {
+            // Route doesn't exist
+            $this->logRouteError($routeName, $e->getMessage());
+
             return '#';
         }
+    }
+
+    /**
+     * Log a route resolution error.
+     */
+    private function logRouteError(string $routeName, string $message): void
+    {
+        if (! config('app.debug')) {
+            return;
+        }
+
+        Log::warning('Navigation route error', [
+            'navigation' => $this->name,
+            'route' => $routeName,
+            'error' => $message,
+        ]);
     }
 
     /**

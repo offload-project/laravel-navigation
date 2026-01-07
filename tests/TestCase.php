@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OffloadProject\Navigation\Tests;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Guard;
 use OffloadProject\Navigation\Contracts\IconCompilerInterface;
 use OffloadProject\Navigation\IconCompiler;
 use OffloadProject\Navigation\Navigation;
@@ -141,38 +142,46 @@ class TestCase extends Orchestra
     /**
      * Create a Navigation instance with default dependencies.
      *
-     * @param array<int, array<string, mixed>> $items
+     * @param  array<int, array<string, mixed>>  $items
      */
     protected function createNavigation(
-        string                  $name,
-        array                   $items,
-        ?IconCompilerInterface  $iconCompiler = null,
+        string $name,
+        array $items,
+        ?IconCompilerInterface $iconCompiler = null,
         ?ItemVisibilityResolver $visibilityResolver = null
-    ): Navigation
-    {
+    ): Navigation {
         return new Navigation(
             $name,
             $items,
             $iconCompiler ?? new IconCompiler(),
-            $visibilityResolver ?? new ItemVisibilityResolver()
+            $visibilityResolver ?? $this->createVisibilityResolver()
         );
     }
 
     /**
      * Create a NavigationManager instance with default dependencies.
      *
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     protected function createNavigationManager(
-        array                   $config,
-        ?IconCompilerInterface  $iconCompiler = null,
+        array $config,
+        ?IconCompilerInterface $iconCompiler = null,
         ?ItemVisibilityResolver $visibilityResolver = null
-    ): NavigationManager
-    {
+    ): NavigationManager {
         return new NavigationManager(
             $config,
             $iconCompiler ?? new IconCompiler(),
-            $visibilityResolver ?? new ItemVisibilityResolver()
+            $visibilityResolver ?? $this->createVisibilityResolver()
+        );
+    }
+
+    /**
+     * Create an ItemVisibilityResolver with the Guard from the container.
+     */
+    protected function createVisibilityResolver(): ItemVisibilityResolver
+    {
+        return new ItemVisibilityResolver(
+            $this->app->make(Guard::class)
         );
     }
 }
