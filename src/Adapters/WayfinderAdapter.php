@@ -10,69 +10,90 @@ use RuntimeException;
 
 final class WayfinderAdapter
 {
-    /** @var array<string, string> */
-    private array $iconMap = [];
-
-    /** @var array<string, string> */
-    private array $methodMap = [];
-
-    /** @var array<string, array<string, mixed>> */
-    private array $attributeMap = [];
-
-    /** @var array<int, string> */
-    private array $excludeRoutes = [];
-
-    private ?string $parentRoute = null;
+    /**
+     * @param  array<string, string>  $iconMap
+     * @param  array<string, string>  $methodMap
+     * @param  array<string, array<string, mixed>>  $attributeMap
+     * @param  array<int, string>  $excludeRoutes
+     */
+    private function __construct(
+        private readonly array $iconMap = [],
+        private readonly array $methodMap = [],
+        private readonly array $attributeMap = [],
+        private readonly array $excludeRoutes = [],
+        private readonly ?string $parentRoute = null,
+    ) {}
 
     /**
-     * Create a navigation structure from Wayfinder routes
+     * Create a navigation structure from Wayfinder routes.
      */
     public static function fromWayfinder(?string $parentRoute = null): self
     {
-        $instance = new self();
-        $instance->parentRoute = $parentRoute;
-
-        return $instance;
+        return new self(parentRoute: $parentRoute);
     }
 
     /**
+     * Add icon mappings (immutable - returns new instance).
+     *
      * @param  array<string, string>  $iconMap
      */
     public function withIcons(array $iconMap): self
     {
-        $this->iconMap = array_merge($this->iconMap, $iconMap);
-
-        return $this;
+        return new self(
+            iconMap: array_merge($this->iconMap, $iconMap),
+            methodMap: $this->methodMap,
+            attributeMap: $this->attributeMap,
+            excludeRoutes: $this->excludeRoutes,
+            parentRoute: $this->parentRoute,
+        );
     }
 
     /**
+     * Add method mappings (immutable - returns new instance).
+     *
      * @param  array<string, string>  $methodMap
      */
     public function withMethods(array $methodMap): self
     {
-        $this->methodMap = array_merge($this->methodMap, $methodMap);
-
-        return $this;
+        return new self(
+            iconMap: $this->iconMap,
+            methodMap: array_merge($this->methodMap, $methodMap),
+            attributeMap: $this->attributeMap,
+            excludeRoutes: $this->excludeRoutes,
+            parentRoute: $this->parentRoute,
+        );
     }
 
     /**
+     * Add custom attribute mappings (immutable - returns new instance).
+     *
      * @param  array<string, array<string, mixed>>  $attributeMap
      */
     public function withAttributes(array $attributeMap): self
     {
-        $this->attributeMap = array_merge($this->attributeMap, $attributeMap);
-
-        return $this;
+        return new self(
+            iconMap: $this->iconMap,
+            methodMap: $this->methodMap,
+            attributeMap: array_merge($this->attributeMap, $attributeMap),
+            excludeRoutes: $this->excludeRoutes,
+            parentRoute: $this->parentRoute,
+        );
     }
 
     /**
+     * Exclude specific routes (immutable - returns new instance).
+     *
      * @param  array<int, string>  $routeNames
      */
     public function exclude(array $routeNames): self
     {
-        $this->excludeRoutes = array_merge($this->excludeRoutes, $routeNames);
-
-        return $this;
+        return new self(
+            iconMap: $this->iconMap,
+            methodMap: $this->methodMap,
+            attributeMap: $this->attributeMap,
+            excludeRoutes: array_merge($this->excludeRoutes, $routeNames),
+            parentRoute: $this->parentRoute,
+        );
     }
 
     /**
