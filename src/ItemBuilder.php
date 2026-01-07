@@ -94,6 +94,37 @@ class ItemBuilder
     }
 
     /**
+     * Create a navigation group/section with a header.
+     *
+     * Groups organize navigation items under a collapsible header.
+     * They don't have routes - they're purely for organization.
+     *
+     * @param  string  $label  Group header label
+     * @param  array<int, array<string, mixed>|ItemBuilder>  $children  Items in this group
+     *
+     * @example Item::group('Settings', [
+     *     Item::make('Profile')->route('settings.profile'),
+     *     Item::make('Security')->route('settings.security'),
+     * ])
+     *
+     * @example Item::group('Admin')
+     *     ->icon('shield')
+     *     ->collapsible()
+     *     ->collapsed()
+     *     ->children([...])
+     */
+    public static function group(string $label, array $children = []): static
+    {
+        $item = new static($label);
+        $item->meta['group'] = true;
+        $item->meta['collapsible'] = true;
+        $item->meta['collapsed'] = false;
+        $item->children = $children;
+
+        return $item;
+    }
+
+    /**
      * Set the display label.
      *
      * @param  string|Closure  $label  Display text or closure for dynamic labels
@@ -319,6 +350,39 @@ class ItemBuilder
     {
         $this->meta['badge'] = $count;
         $this->meta['badgeColor'] = $color;
+
+        return $this;
+    }
+
+    /**
+     * Set whether a group is collapsible.
+     *
+     * Only applies to groups created with Item::group().
+     *
+     * @param  bool  $collapsible  Whether the group can be collapsed
+     *
+     * @example Item::group('Settings')->collapsible(false) // Always expanded
+     */
+    public function collapsible(bool $collapsible = true): static
+    {
+        $this->meta['collapsible'] = $collapsible;
+
+        return $this;
+    }
+
+    /**
+     * Set the default collapsed state of a group.
+     *
+     * Only applies to collapsible groups created with Item::group().
+     *
+     * @param  bool  $collapsed  Whether the group starts collapsed
+     *
+     * @example Item::group('Advanced')->collapsed() // Starts collapsed
+     * @example Item::group('Main')->collapsed(false) // Starts expanded (default)
+     */
+    public function collapsed(bool $collapsed = true): static
+    {
+        $this->meta['collapsed'] = $collapsed;
 
         return $this;
     }

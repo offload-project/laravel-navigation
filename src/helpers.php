@@ -91,3 +91,31 @@ if (! function_exists('nav_action')) {
         return Item::action($label, $route, $method, $icon);
     }
 }
+
+if (! function_exists('nav_group')) {
+    /**
+     * Create a navigation group/section with a header.
+     *
+     * Groups organize navigation items under a collapsible header.
+     *
+     * @param  string  $label  Group header label
+     * @param  array<int, array<string, mixed>|ItemBuilder>  $children  Items in this group
+     * @param  string|null  $icon  Icon name
+     *
+     * @example nav_group('Settings', [
+     *     nav_item('Profile', 'settings.profile'),
+     *     nav_item('Security', 'settings.security'),
+     * ])
+     * @example nav_group('Admin', [], 'shield')->collapsed()->children([...])
+     */
+    function nav_group(string $label, array $children = [], ?string $icon = null): ItemBuilder
+    {
+        $group = Item::group($label, $children);
+
+        if ($icon !== null) {
+            $group->icon($icon);
+        }
+
+        return $group;
+    }
+}

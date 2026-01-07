@@ -92,6 +92,7 @@ return [
 
 Available helpers:
 - `nav_item($label, $route?, $icon?)` — Standard navigation item
+- `nav_group($label, $children?, $icon?)` — Collapsible group/section
 - `nav_separator()` — Visual separator
 - `nav_divider($spacing?)` — Divider with optional spacing
 - `nav_external($label, $url, $icon?)` — External link
@@ -260,6 +261,107 @@ Item::make('Dashboard')
     ->route('dashboard')
     ->meta('badge', 5)
     ->meta('feature', 'beta')
+```
+
+## Groups & Sections
+
+Organize navigation items into collapsible groups with headers:
+
+```php
+use OffloadProject\Navigation\Item;
+
+return [
+    'navigations' => [
+        'sidebar' => [
+            Item::make('Dashboard')->route('dashboard')->icon('home'),
+
+            Item::group('Settings', [
+                Item::make('Profile')->route('settings.profile'),
+                Item::make('Security')->route('settings.security'),
+                Item::make('Notifications')->route('settings.notifications'),
+            ])->icon('cog'),
+
+            Item::group('Administration', [
+                Item::make('Users')->route('admin.users'),
+                Item::make('Roles')->route('admin.roles'),
+            ])->icon('shield')->collapsed(), // Starts collapsed
+        ],
+    ],
+];
+```
+
+Or with helper functions:
+
+```php
+return [
+    'navigations' => [
+        'sidebar' => [
+            nav_item('Dashboard', 'dashboard', 'home'),
+
+            nav_group('Settings', [
+                nav_item('Profile', 'settings.profile'),
+                nav_item('Security', 'settings.security'),
+            ], 'cog'),
+
+            nav_group('Admin', [], 'shield')
+                ->collapsed()
+                ->can('access-admin')
+                ->children([
+                    nav_item('Users', 'admin.users'),
+                    nav_item('Roles', 'admin.roles'),
+                ]),
+        ],
+    ],
+];
+```
+
+### Group Options
+
+```php
+// Basic group
+Item::group('Settings', [...])
+
+// With icon
+Item::group('Settings', [...])->icon('cog')
+
+// Not collapsible (always expanded)
+Item::group('Main')->collapsible(false)
+
+// Starts collapsed
+Item::group('Advanced')->collapsed()
+
+// With authorization
+Item::group('Admin')->can('access-admin')
+
+// With visibility
+Item::group('Beta')->visible(config('features.beta'))
+
+// Nested groups
+Item::group('Settings', [
+    Item::make('General')->route('settings.general'),
+    Item::group('Advanced', [
+        Item::make('API Keys')->route('settings.api'),
+        Item::make('Webhooks')->route('settings.webhooks'),
+    ])->collapsed(),
+])
+```
+
+### Group Output
+
+Groups output with these additional fields:
+
+```php
+[
+    'id' => 'nav-sidebar-1',
+    'label' => 'Settings',
+    'url' => null,           // Groups don't have URLs
+    'isActive' => true,      // Active if any child is active
+    'icon' => '<svg>...</svg>',
+    'group' => true,         // Identifies this as a group
+    'collapsible' => true,   // Can be collapsed
+    'collapsed' => false,    // Default collapsed state
+    'children' => [...],
+]
 ```
 
 ## Route Parameters
