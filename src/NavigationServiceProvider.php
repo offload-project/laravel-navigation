@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OffloadProject\Navigation;
 
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\ServiceProvider;
 use OffloadProject\Navigation\Commands\CompileIconsCommand;
 use OffloadProject\Navigation\Commands\ValidateNavigationCommand;
@@ -20,11 +21,16 @@ final class NavigationServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(IconCompilerInterface::class, IconCompiler::class);
-        $this->app->singleton(ItemVisibilityResolver::class);
+
+        $this->app->singleton(ItemVisibilityResolver::class, function ($app) {
+            return new ItemVisibilityResolver(
+                $app->make(Guard::class)
+            );
+        });
 
         $this->app->singleton(NavigationManager::class, function ($app) {
             return new NavigationManager(
-                $app['config']['navigation'],
+                config('navigation', []),
                 $app->make(IconCompilerInterface::class),
                 $app->make(ItemVisibilityResolver::class)
             );

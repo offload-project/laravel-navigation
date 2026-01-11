@@ -17,22 +17,28 @@
   ],
   "require": {
     "php": "^8.3",
+    "enshrined/svg-sanitize": "^0.22",
     "illuminate/routing": "^11.0|^12.0",
     "illuminate/support": "^11.0|^12.0"
   },
   "require-dev": {
+    "captainhook/captainhook-phar": "^5.27",
     "larastan/larastan": "^3.8.1",
     "laravel/pint": "^1.26.0",
     "laravel/wayfinder": "^0.1.12",
     "orchestra/testbench": "^9.15|^10.8",
     "pestphp/pest": "^3.0|^4.0",
     "pestphp/pest-plugin-laravel": "^3.0|^4.0",
+    "ramsey/conventional-commits": "^1.6",
     "spatie/laravel-data": "^4.18"
   },
   "autoload": {
     "psr-4": {
       "OffloadProject\\Navigation\\": "src/"
-    }
+    },
+    "files": [
+      "src/helpers.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
@@ -58,6 +64,7 @@
   },
   "config": {
     "allow-plugins": {
+      "captainhook/captainhook-phar": true,
       "pestphp/pest-plugin": true
     },
     "sort-packages": true

@@ -1,7 +1,8 @@
 {
   "preset": "laravel",
   "notPath": [
-    "tests/TestCase.php"
+    "tests/TestCase.php",
+    "src/ItemBuilder.php"
   ],
   "rules": {
     "array_push": true,
