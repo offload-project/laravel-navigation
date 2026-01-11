@@ -30,7 +30,7 @@ final class NavigationServiceProvider extends ServiceProvider
 
         $this->app->singleton(NavigationManager::class, function ($app) {
             return new NavigationManager(
-                config('navigation'),
+                config('navigation', []),
                 $app->make(IconCompilerInterface::class),
                 $app->make(ItemVisibilityResolver::class)
             );

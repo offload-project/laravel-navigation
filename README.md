@@ -578,6 +578,35 @@ See: https://github.com/offload-project/laravel-navigation#routing
 
 ## Migration Guide
 
+### Upgrading to v1.1
+
+#### Breaking Changes
+
+**Icon Storage Format Changed**
+
+Compiled icons are now stored as JSON instead of PHP. If you have previously compiled icons:
+
+```bash
+# Recompile your icons to use the new format
+php artisan navigation:compile-icons
+```
+
+The old PHP format (`storage/navigation/icons.php`) will still be loaded for backwards compatibility, but new compilations will use JSON (`storage/navigation/icons.json`).
+
+**NavigationManager Constructor**
+
+If you're manually instantiating `NavigationManager`, the constructor now requires an `ItemVisibilityResolver` instance:
+
+```php
+// Before
+new NavigationManager($config, $iconCompiler);
+
+// After
+new NavigationManager($config, $iconCompiler, $visibilityResolver);
+```
+
+Most users won't be affected as the class is typically resolved from the container.
+
 ### Deprecated Methods
 
 The following methods are deprecated and will be removed in v2.0:

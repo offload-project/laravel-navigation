@@ -13,7 +13,7 @@ use RuntimeException;
 
 final class IconCompiler implements IconCompilerInterface
 {
-    private const string ICON_CDN_URL = 'https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/%s.svg';
+    private const string ICON_CDN_URL = 'https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/';
 
     /** @var array<string, string> */
     private array $compiledIcons = [];
@@ -37,7 +37,7 @@ final class IconCompiler implements IconCompilerInterface
 
     public function compileIcon(string $iconName): ?string
     {
-        $url = sprintf(self::ICON_CDN_URL, $iconName);
+        $url = self::ICON_CDN_URL."{$iconName}.svg";
 
         try {
             $response = Http::timeout(10)->get($url);
@@ -105,7 +105,7 @@ final class IconCompiler implements IconCompilerInterface
                 fn (string $iconName) => $pool
                     ->as($iconName)
                     ->timeout(10)
-                    ->get(sprintf(self::ICON_CDN_URL, $iconName)),
+                    ->get(self::ICON_CDN_URL."{$iconName}.svg"),
                 $chunk
             ));
 
@@ -145,7 +145,7 @@ final class IconCompiler implements IconCompilerInterface
             }
         }
 
-        // Use JSON instead of var_export for security (prevents code injection)
+        // Use JSON instead of PHP var_export to avoid arbitrary code execution when loading
         $content = json_encode($icons, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
         if ($content === false) {
@@ -190,7 +190,9 @@ final class IconCompiler implements IconCompilerInterface
         }
 
         // Add data-slot attribute for styling
-        return preg_replace('/<svg/', '<svg data-slot="icon"', $svg, 1);
+        $result = preg_replace('/<svg/', '<svg data-slot="icon"', $svg, 1);
+
+        return $result ?? $svg;
     }
 
     private function loadCompiledIcons(): void
@@ -218,6 +220,7 @@ final class IconCompiler implements IconCompilerInterface
 
         // Fallback to PHP format for backwards compatibility (will be migrated on next save)
         if (str_starts_with($content, '<?php')) {
+            Log::warning('Navigation icons are using deprecated PHP format. Run "php artisan navigation:compile-icons" to migrate to JSON format.');
             $this->compiledIcons = require $path;
         }
     }

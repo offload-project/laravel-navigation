@@ -80,7 +80,7 @@ final class Navigation implements NavigationInterface
         trigger_deprecation(
             'offload-project/laravel-navigation',
             '1.1',
-            'Method "%s::toTree()" is deprecated, use "items()" instead.',
+            'Method "%s::toTree()" is deprecated. Use "items()" instead.',
             self::class
         );
 
@@ -120,7 +120,7 @@ final class Navigation implements NavigationInterface
         trigger_deprecation(
             'offload-project/laravel-navigation',
             '1.1',
-            'Method "%s::getBreadcrumbs()" is deprecated, use "breadcrumbs()" instead.',
+            'Method "%s::getBreadcrumbs()" is deprecated. Use "breadcrumbs()" instead.',
             self::class
         );
 

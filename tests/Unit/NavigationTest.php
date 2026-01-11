@@ -295,3 +295,63 @@ it('handles meta-only items in children', function () {
         ->and($tree[0]['children'][1])->not->toHaveKey('label')
         ->and($tree[0]['children'][2]['label'])->toBe('Child 2');
 });
+
+describe('Route Error Handling', function (): void {
+    it('returns hash for invalid route in production', function (): void {
+        config(['app.debug' => false]);
+
+        $items = [
+            ['label' => 'Invalid', 'route' => 'nonexistent.route'],
+        ];
+
+        $navigation = $this->createNavigation('test', $items);
+        $tree = $navigation->toTree();
+
+        expect($tree[0]['url'])->toBe('#');
+    });
+
+    it('returns hash for invalid route in debug mode', function (): void {
+        config(['app.debug' => true]);
+
+        $items = [
+            ['label' => 'Invalid', 'route' => 'nonexistent.route'],
+        ];
+
+        $navigation = $this->createNavigation('test', $items);
+        $tree = $navigation->toTree();
+
+        expect($tree[0]['url'])->toBe('#');
+    });
+
+    it('logs warning in debug mode for invalid route', function (): void {
+        config(['app.debug' => true]);
+
+        Illuminate\Support\Facades\Log::shouldReceive('warning')
+            ->once()
+            ->withArgs(function ($message, $context) {
+                return $message === 'Navigation route error'
+                    && isset($context['route'])
+                    && $context['route'] === 'nonexistent.route';
+            });
+
+        $items = [
+            ['label' => 'Invalid', 'route' => 'nonexistent.route'],
+        ];
+
+        $navigation = $this->createNavigation('test', $items);
+        $navigation->toTree();
+    });
+
+    it('does not log warning in production for invalid route', function (): void {
+        config(['app.debug' => false]);
+
+        Illuminate\Support\Facades\Log::shouldReceive('warning')->never();
+
+        $items = [
+            ['label' => 'Invalid', 'route' => 'nonexistent.route'],
+        ];
+
+        $navigation = $this->createNavigation('test', $items);
+        $navigation->toTree();
+    });
+});

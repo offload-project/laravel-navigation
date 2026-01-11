@@ -9,6 +9,9 @@ use Closure;
 /**
  * Fluent builder for registering navigation at runtime.
  *
+ * Note: This builder only supports one level of nesting via child().
+ * For deeper nesting, use Item::make() with children() or the add() method.
+ *
  * @example
  * Navigation::register('main')
  *     ->item('Dashboard', 'dashboard', 'home')
@@ -148,7 +151,7 @@ final class NavigationBuilder
     public function separator(): self
     {
         $this->parentStack = [];
-        $this->items[] = ['type' => 'separator'];
+        $this->items[] = ['separator' => true];
 
         return $this;
     }
@@ -159,7 +162,7 @@ final class NavigationBuilder
     public function divider(string $spacing = 'default'): self
     {
         $this->parentStack = [];
-        $this->items[] = ['type' => 'divider', 'spacing' => $spacing];
+        $this->items[] = ['divider' => $spacing];
 
         return $this;
     }

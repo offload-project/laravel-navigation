@@ -21,7 +21,7 @@ final class WayfinderAdapter
         private readonly array $methodMap = [],
         private readonly array $attributeMap = [],
         private readonly array $excludeRoutes = [],
-        private readonly ?string $parentRoute = null,
+        private readonly ?string $parentRoute = null
     ) {}
 
     /**
