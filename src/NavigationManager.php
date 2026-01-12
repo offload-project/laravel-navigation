@@ -89,6 +89,12 @@ final class NavigationManager
                 ?? $this->config['navigations'][$name]
                 ?? [];
 
+            // Convert any ItemBuilder instances to arrays
+            $items = array_map(
+                fn ($item) => $item instanceof ItemBuilder ? $item->toArray() : $item,
+                $items
+            );
+
             $this->navigations[$name] = new Navigation(
                 $name,
                 $items,
