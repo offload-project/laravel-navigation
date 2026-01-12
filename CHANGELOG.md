@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/offload-project/laravel-navigation/compare/v1.1.0...v1.1.1) (2026-01-12)
+
+
+### Bug Fixes
+
+* navigation facade arg type error ([#4](https://github.com/offload-project/laravel-navigation/issues/4)) ([078e50d](https://github.com/offload-project/laravel-navigation/commit/078e50d06418abcd8fdc7f6d1908053d7315d4ba))
+
 ## [1.1.0](https://github.com/offload-project/laravel-navigation/compare/v1.0.0...v1.1.0) (2026-01-11)
 
 
