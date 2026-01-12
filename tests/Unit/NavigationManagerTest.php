@@ -100,3 +100,20 @@ it('returns breadcrumbs from first matching navigation', function () {
     expect($breadcrumbs)->toHaveCount(1)
         ->and($breadcrumbs[0]['label'])->toBe('Dashboard');
 });
+
+it('converts ItemBuilder instances to arrays when getting navigation', function () {
+    $config = $this->config;
+    $config['navigations']['fluent'] = [
+        OffloadProject\Navigation\Item::make('Fluent Dashboard')->route('dashboard')->icon('home'),
+        OffloadProject\Navigation\Item::make('Fluent Users')->route('users.index'),
+    ];
+
+    $manager = $this->createNavigationManager($config);
+    $navigation = $manager->get('fluent');
+    $tree = $navigation->items();
+
+    expect($tree)->toHaveCount(2)
+        ->and($tree[0]['label'])->toBe('Fluent Dashboard')
+        ->and($tree[0])->toHaveKey('icon')
+        ->and($tree[1]['label'])->toBe('Fluent Users');
+});
