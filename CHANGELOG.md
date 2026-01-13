@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/offload-project/laravel-navigation/compare/v1.2.0...v1.2.1) (2026-01-13)
+
+
+### Bug Fixes
+
+* remove irrelevant keys from group and separator outputs ([#8](https://github.com/offload-project/laravel-navigation/issues/8)) ([6207d6b](https://github.com/offload-project/laravel-navigation/commit/6207d6b5440842714670e6f01fc4ca805347c7d6))
+
 ## [1.2.0](https://github.com/offload-project/laravel-navigation/compare/v1.1.1...v1.2.0) (2026-01-13)
 
 
