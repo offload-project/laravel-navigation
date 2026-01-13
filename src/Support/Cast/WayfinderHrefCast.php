@@ -6,6 +6,7 @@ namespace OffloadProject\Navigation\Support\Cast;
 
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Optional;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
 
@@ -19,7 +20,7 @@ final class WayfinderHrefCast implements Cast
     {
         $method = $properties['method'] ?? null;
 
-        if ($method) {
+        if ($method !== null && ! $method instanceof Optional) {
             return [
                 'url' => $value,
                 'method' => $method,
