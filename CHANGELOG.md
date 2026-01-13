@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/offload-project/laravel-navigation/compare/v1.1.1...v1.2.0) (2026-01-13)
+
+
+### Features
+
+* handle Optional type in Wayfinder data transformer ([#6](https://github.com/offload-project/laravel-navigation/issues/6)) ([e6958f8](https://github.com/offload-project/laravel-navigation/commit/e6958f8479ceec84c8d2bd6400dae9e16844499e))
+
 ## [1.1.1](https://github.com/offload-project/laravel-navigation/compare/v1.1.0...v1.1.1) (2026-01-12)
 
 
