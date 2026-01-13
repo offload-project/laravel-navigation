@@ -268,6 +268,8 @@ it('handles items with only meta (no label)', function () {
         ->and($tree[1]['meta']['type'])->toBe('separator')
         ->and($tree[1])->not->toHaveKey('label')
         ->and($tree[1])->not->toHaveKey('isActive')
+        ->and($tree[1])->not->toHaveKey('url')
+        ->and($tree[1])->not->toHaveKey('children')
         ->and($tree[2]['label'])->toBe('About')
         ->and($tree[3]['meta'])->toBe(['type' => 'divider', 'spacing' => 'large'])
         ->and($tree[4]['label'])->toBe('Contact');
