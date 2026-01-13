@@ -149,13 +149,17 @@ final class Navigation implements NavigationInterface
 
             $id = $this->generateNodeId($index, $parentId);
             $node = $this->buildNode($item, $id, $routeParams, $currentRoute, $currentRouteParams);
-            $node['children'] = $this->buildTree(
-                $item->children,
-                $routeParams,
-                $currentRoute,
-                $currentRouteParams,
-                $id
-            );
+
+            // Only add children for items with labels (not separators/dividers)
+            if ($item->label !== '') {
+                $node['children'] = $this->buildTree(
+                    $item->children,
+                    $routeParams,
+                    $currentRoute,
+                    $currentRouteParams,
+                    $id
+                );
+            }
 
             $tree[] = $node;
         }
@@ -237,11 +241,13 @@ final class Navigation implements NavigationInterface
         if ($item->label !== '') {
             $node['label'] = $item->label;
             $node['isActive'] = $this->isActive($item, $currentRoute, $currentRouteParams);
-            $node['children'] = [];
         }
 
-        // Add URL
-        $node['url'] = $this->resolveUrl($item, $routeParams);
+        // Add URL if present
+        $url = $this->resolveUrl($item, $routeParams);
+        if ($url !== null) {
+            $node['url'] = $url;
+        }
 
         // Add method if present
         if ($item->method !== null) {

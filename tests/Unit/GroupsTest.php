@@ -187,7 +187,7 @@ describe('Navigation Groups', function (): void {
             ->toHaveKey('children');
     });
 
-    it('groups without routes have null url', function (): void {
+    it('groups without routes do not have url in output', function (): void {
         Navigation::addNavigation('main', [
             Item::group('Settings', [
                 Item::make('Profile')->route('settings.profile'),
@@ -196,7 +196,7 @@ describe('Navigation Groups', function (): void {
 
         $items = Navigation::get('main')->items();
 
-        expect($items[0]['url'])->toBeNull();
+        expect($items[0])->not->toHaveKey('url');
     });
 
     it('groups can have badges', function (): void {
