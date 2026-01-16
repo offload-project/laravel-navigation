@@ -239,12 +239,17 @@ final class IconCompiler implements IconCompilerInterface
     }
 
     /**
-     * @param  array<int, array<string, mixed>>  $items
+     * @param  array<int, array<string, mixed>|ItemBuilder>  $items
      * @param  array<int, string>  $icons
      */
     private function extractIconsRecursive(array $items, array &$icons): void
     {
         foreach ($items as $item) {
+            // Convert ItemBuilder to array if needed
+            if ($item instanceof ItemBuilder) {
+                $item = $item->toArray();
+            }
+
             if (isset($item['icon']) && is_string($item['icon'])) {
                 $icons[] = $item['icon'];
             }
