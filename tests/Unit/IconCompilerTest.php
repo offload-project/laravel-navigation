@@ -39,6 +39,41 @@ it('removes duplicate icons', function () {
     expect($icons)->toHaveCount(1);
 });
 
+it('extracts icons from ItemBuilder instances', function () {
+    $config = [
+        'profile' => [
+            OffloadProject\Navigation\Item::make('Profile')->route('settings.profile')->icon('user'),
+            OffloadProject\Navigation\Item::make('Password')->route('settings.password')->icon('lock-keyhole'),
+            OffloadProject\Navigation\Item::make('Logout')->route('logout')->method('post')->icon('log-out'),
+        ],
+    ];
+
+    $compiler = new IconCompiler();
+    $icons = $compiler->extractIconsFromConfig($config);
+
+    expect($icons)->toContain('user', 'lock-keyhole', 'log-out')
+        ->and($icons)->toHaveCount(3);
+});
+
+it('extracts icons from nested ItemBuilder children', function () {
+    $config = [
+        'main' => [
+            OffloadProject\Navigation\Item::make('Settings')
+                ->icon('settings')
+                ->children([
+                    OffloadProject\Navigation\Item::make('Profile')->icon('user'),
+                    OffloadProject\Navigation\Item::make('Security')->icon('shield'),
+                ]),
+        ],
+    ];
+
+    $compiler = new IconCompiler();
+    $icons = $compiler->extractIconsFromConfig($config);
+
+    expect($icons)->toContain('settings', 'user', 'shield')
+        ->and($icons)->toHaveCount(3);
+});
+
 it('returns icon name when not compiled', function () {
     $compiler = new IconCompiler();
     $result = $compiler->compile('home');
