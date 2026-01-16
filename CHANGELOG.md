@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/offload-project/laravel-navigation/compare/v1.2.1...v1.2.2) (2026-01-16)
+
+
+### Bug Fixes
+
+* icon compiler handle objects from builder ([#10](https://github.com/offload-project/laravel-navigation/issues/10)) ([476ea7a](https://github.com/offload-project/laravel-navigation/commit/476ea7ae19b4ad446bbb3510897b5d17297c2e87))
+
 ## [1.2.1](https://github.com/offload-project/laravel-navigation/compare/v1.2.0...v1.2.1) (2026-01-13)
 
 
