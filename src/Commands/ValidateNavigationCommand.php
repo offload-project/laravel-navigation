@@ -6,6 +6,7 @@ namespace OffloadProject\Navigation\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
+use OffloadProject\Navigation\ItemBuilder;
 
 final class ValidateNavigationCommand extends Command
 {
@@ -38,12 +39,16 @@ final class ValidateNavigationCommand extends Command
     }
 
     /**
-     * @param  array<int, array<string, mixed>>  $items
+     * @param  array<int, array<string, mixed>|ItemBuilder>  $items
      * @param  array<int, string>  $errors
      */
     protected function validateItems(array $items, string $navName, array &$errors, string $path = ''): void
     {
         foreach ($items as $index => $item) {
+            if ($item instanceof ItemBuilder) {
+                $item = $item->toArray();
+            }
+
             $label = $item['label'] ?? "Item at index {$index}";
             $currentPath = $path ? "{$path} > {$label}" : $label;
 
