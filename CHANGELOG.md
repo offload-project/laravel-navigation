@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/offload-project/laravel-navigation/compare/v1.2.2...v1.2.3) (2026-01-31)
+
+
+### Bug Fixes
+
+* nav validator handle objects from builder ([2207384](https://github.com/offload-project/laravel-navigation/commit/2207384e2f7da1033993d2dd608b0e6c706e8c74))
+
 ## [1.2.2](https://github.com/offload-project/laravel-navigation/compare/v1.2.1...v1.2.2) (2026-01-16)
 
 
