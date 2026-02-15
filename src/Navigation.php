@@ -420,7 +420,10 @@ final class Navigation implements NavigationInterface
 
             // Check if this is the target (with wildcard support)
             if ($item->route !== null && $this->routeMatches($item->route, $targetRoute, $item->params, $routeParams)) {
-                return $this->resolveBreadcrumbLabels($newPath, $routeParams);
+                $resolved = $this->resolveBreadcrumbLabels($newPath, $routeParams);
+                $resolved[array_key_last($resolved)]['isActive'] = true;
+
+                return $resolved;
             }
 
             // Check children

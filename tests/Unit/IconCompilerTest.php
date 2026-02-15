@@ -75,6 +75,12 @@ it('extracts icons from nested ItemBuilder children', function () {
 });
 
 it('returns icon name when not compiled', function () {
+    // Ensure no compiled icons file exists for this test
+    $path = config('navigation.icons.compiled_path', storage_path('navigation/icons.json'));
+    if (file_exists($path)) {
+        unlink($path);
+    }
+
     $compiler = new IconCompiler();
     $result = $compiler->compile('home');
 

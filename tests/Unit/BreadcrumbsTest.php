@@ -67,3 +67,20 @@ it('includes URLs in breadcrumbs', function () {
         ->and($breadcrumbs[0]['url'])->toBe(url('/users'))
         ->and($breadcrumbs[1]['url'])->toBe(url('/users/roles'));
 });
+
+it('marks the last breadcrumb as active', function () {
+    $navigation = $this->createNavigation('main', $this->config['navigations']['main']);
+    $breadcrumbs = $navigation->getBreadcrumbs('users.roles.index');
+
+    expect($breadcrumbs)->toHaveCount(2)
+        ->and($breadcrumbs[0])->not->toHaveKey('isActive')
+        ->and($breadcrumbs[1]['isActive'])->toBeTrue();
+});
+
+it('marks single breadcrumb as active', function () {
+    $navigation = $this->createNavigation('main', $this->config['navigations']['main']);
+    $breadcrumbs = $navigation->getBreadcrumbs('dashboard');
+
+    expect($breadcrumbs)->toHaveCount(1)
+        ->and($breadcrumbs[0]['isActive'])->toBeTrue();
+});
