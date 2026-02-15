@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/offload-project/laravel-navigation/compare/v1.2.3...v1.3.0) (2026-02-15)
+
+
+### Features
+
+* add isActive to breadcrumbs ([e148f07](https://github.com/offload-project/laravel-navigation/commit/e148f07596ac32c71c07913bc5dbf9286e2331ce))
+
 ## [1.2.3](https://github.com/offload-project/laravel-navigation/compare/v1.2.2...v1.2.3) (2026-01-31)
 
 
