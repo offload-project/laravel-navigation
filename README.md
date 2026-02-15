@@ -549,6 +549,17 @@ The `items()` method returns a frontend-ready structure:
 ]
 ```
 
+The `breadcrumbs()` method returns:
+
+```php
+[
+    ['id' => 'breadcrumb-main-0-1', 'label' => 'Users', 'route' => 'users.index', 'url' => '/users'],
+    ['id' => 'breadcrumb-main-1-0', 'label' => 'Edit: John', 'route' => 'users.edit', 'url' => '/users/1/edit', 'isActive' => true],
+]
+```
+
+The last breadcrumb includes `isActive => true` to identify the current page.
+
 ## Configuration Reference
 
 | Option           | Type              | Description                                      |
