@@ -18,8 +18,8 @@
   "require": {
     "php": "^8.3",
     "enshrined/svg-sanitize": "^0.22",
-    "illuminate/routing": "^11.0|^12.0",
-    "illuminate/support": "^11.0|^12.0"
+    "illuminate/routing": "^11.0|^12.0|^13.0",
+    "illuminate/support": "^11.0|^12.0|^13.0"
   },
   "require-dev": {
     "captainhook/captainhook-phar": "^5.27",
