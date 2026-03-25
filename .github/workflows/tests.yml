@@ -37,9 +37,6 @@ jobs:
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
-          if [[ "${{ matrix.laravel }}" == "13.*" ]]; then
-            composer require "guzzlehttp/promises:^2.0.3" --no-interaction --no-update
-          fi
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Execute tests
