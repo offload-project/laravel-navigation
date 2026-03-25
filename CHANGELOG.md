@@ -4,8 +4,7 @@
 
 ### Features
 
-* Laravel 13
-  support ([b633ce5](https://github.com/offload-project/laravel-navigation/commit/b633ce5c4d55cb931b135f1a7ed93da1b3c31b4d))
+* Laravel 13 support ([b633ce5](https://github.com/offload-project/laravel-navigation/commit/b633ce5c4d55cb931b135f1a7ed93da1b3c31b4d))
 
 ### Miscellaneous Chores
 
