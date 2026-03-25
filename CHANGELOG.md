@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/offload-project/laravel-navigation/compare/v1.3.0...v1.4.0) (2026-03-25)
+
+
+### Features
+
+* Laravel 13 support ([b633ce5](https://github.com/offload-project/laravel-navigation/commit/b633ce5c4d55cb931b135f1a7ed93da1b3c31b4d))
+* update to fix version ([baa0502](https://github.com/offload-project/laravel-navigation/commit/baa05028a66137ce90400c438c4bb93e48ebfca9))
+
+
+### Miscellaneous Chores
+
+* add additional testbench version ([b5559ab](https://github.com/offload-project/laravel-navigation/commit/b5559ab43b3d7a86db0eb73b512023049bfca0e2))
+
 ## [1.3.0](https://github.com/offload-project/laravel-navigation/compare/v1.2.3...v1.3.0) (2026-02-15)
 
 
