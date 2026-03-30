@@ -52,6 +52,20 @@ it('shows path to invalid route in error message', function () {
         ->assertExitCode(1);
 });
 
+it('handles closure labels without error', function () {
+    $config = $this->getTestConfig();
+    $config['navigations']['main'][1]['children'][] = [
+        'label' => fn ($user) => "{$user->name}",
+        'route' => 'users.index',
+    ];
+
+    config(['navigation' => $config]);
+
+    $this->artisan('navigation:validate')
+        ->expectsOutput('✓ All navigation routes are valid!')
+        ->assertExitCode(0);
+});
+
 it('handles navigation items without routes', function () {
     // Test that items without routes don't fail validation
     $config = [

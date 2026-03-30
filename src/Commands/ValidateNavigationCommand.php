@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OffloadProject\Navigation\Commands;
 
+use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
 use OffloadProject\Navigation\ItemBuilder;
@@ -50,6 +51,9 @@ final class ValidateNavigationCommand extends Command
             }
 
             $label = $item['label'] ?? "Item at index {$index}";
+            if ($label instanceof Closure) {
+                $label = "Item at index {$index} (dynamic label)";
+            }
             $currentPath = $path ? "{$path} > {$label}" : $label;
 
             if (isset($item['route'])) {
