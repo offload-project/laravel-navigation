@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.4.1 - 2026-03-30
+
+### Fixed
+- Handle closure labels in nav validation [#19](https://github.com/offload-project/laravel-navigation/pull/19)
+
+### Changed
+- Update gitattrs [#18](https://github.com/offload-project/laravel-navigation/pull/18)
+- Drop dependabot automerge [#18](https://github.com/offload-project/laravel-navigation/pull/18)
+
+### Other
+- Update to use release champion [#18](https://github.com/offload-project/laravel-navigation/pull/18)
+
 ## [1.4.0](https://github.com/offload-project/laravel-navigation/compare/v1.3.0...v1.4.0) (2026-03-25)
 
 ### Features
