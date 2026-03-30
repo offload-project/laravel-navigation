@@ -18,3 +18,4 @@ jobs:
       - uses: offload-project/release-champion@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          draft-release: false
