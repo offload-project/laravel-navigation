@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.3 - 2026-04-08
+
+### Fixed
+- Suppressed the warning for breadcrumbOnly items [#25](https://github.com/offload-project/laravel-navigation/pull/25)
+
 ## v1.4.2 - 2026-04-08
 
 ### Changed
