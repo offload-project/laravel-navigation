@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.2 - 2026-04-08
+
+### Changed
+- Composer install hooks script ([5d8dfc4](https://github.com/offload-project/laravel-navigation/commit/5d8dfc4096a1c871221a59741f2fa0777c4857c2))
+- Repo updates [#22](https://github.com/offload-project/laravel-navigation/pull/22)
+- Draft release false [#21](https://github.com/offload-project/laravel-navigation/pull/21)
+
 ## v1.4.1 - 2026-03-30
 
 ### Fixed
