@@ -358,17 +358,21 @@ final class Navigation implements NavigationInterface
      *
      * @param  array<string, mixed>  $params
      */
-    private function resolveRoute(string $routeName, array $params = []): string
+    private function resolveRoute(string $routeName, array $params = [], bool $silent = false): string
     {
         try {
             return route($routeName, $params);
         } catch (UrlGenerationException $e) {
-            $this->logRouteError($routeName, $e->getMessage());
+            if (! $silent) {
+                $this->logRouteError($routeName, $e->getMessage());
+            }
 
             return '#';
         } catch (InvalidArgumentException $e) {
             // Route doesn't exist
-            $this->logRouteError($routeName, $e->getMessage());
+            if (! $silent) {
+                $this->logRouteError($routeName, $e->getMessage());
+            }
 
             return '#';
         }
@@ -457,12 +461,15 @@ final class Navigation implements NavigationInterface
         if ($item->route !== null) {
             $breadcrumbItem['route'] = $item->route;
 
-            // For breadcrumb-only items with wildcards, use current route params
+            // For breadcrumb-only items with wildcards, use current route params.
+            // Silently fall back to '#' when params can't be resolved — these are ancestor
+            // items in a breadcrumb chain whose required params aren't present in the
+            // current route, which is expected and not a real error.
             if ($item->breadcrumbOnly && $item->params !== null) {
                 $resolvedParams = $this->resolveWildcardParams($item->params, $routeParams);
-                $breadcrumbItem['url'] = $this->resolveRoute($item->route, $resolvedParams);
+                $breadcrumbItem['url'] = $this->resolveRoute($item->route, $resolvedParams, silent: true);
             } else {
-                $breadcrumbItem['url'] = $this->resolveRoute($item->route, $routeParams);
+                $breadcrumbItem['url'] = $this->resolveRoute($item->route, $routeParams, silent: $item->breadcrumbOnly);
             }
         } elseif ($item->url !== null) {
             $breadcrumbItem['url'] = $item->url;
