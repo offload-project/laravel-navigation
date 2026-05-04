@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.0 - 2026-05-04
+
+### Added
+- Section [#27](https://github.com/offload-project/laravel-navigation/pull/27)
+
 ## v1.4.3 - 2026-04-08
 
 ### Fixed
