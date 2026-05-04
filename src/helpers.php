@@ -94,7 +94,7 @@ if (! function_exists('nav_action')) {
 
 if (! function_exists('nav_group')) {
     /**
-     * Create a navigation group/section with a header.
+     * Create a navigation group with a collapsible header.
      *
      * Groups organize navigation items under a collapsible header.
      *
@@ -117,5 +117,35 @@ if (! function_exists('nav_group')) {
         }
 
         return $group;
+    }
+}
+
+if (! function_exists('nav_section')) {
+    /**
+     * Create a navigation section that holds items and groups under a header.
+     *
+     * Sections are top-level structural containers. They support the same
+     * fluent options as groups but default to non-collapsible.
+     *
+     * @param  string  $label  Section header label
+     * @param  array<int, array<string, mixed>|ItemBuilder>  $children  Items and groups in this section
+     * @param  string|null  $icon  Icon name
+     *
+     * @example nav_section('Workspace', [
+     *     nav_item('Dashboard', 'dashboard'),
+     *     nav_group('Settings', [
+     *         nav_item('Profile', 'settings.profile'),
+     *     ]),
+     * ])
+     */
+    function nav_section(string $label, array $children = [], ?string $icon = null): ItemBuilder
+    {
+        $section = Item::section($label, $children);
+
+        if ($icon !== null) {
+            $section->icon($icon);
+        }
+
+        return $section;
     }
 }
