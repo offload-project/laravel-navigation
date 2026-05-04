@@ -190,6 +190,22 @@ final readonly class NavigationItem
         if (isset($data['params']) && ! isset($data['route'])) {
             throw InvalidNavigationItemException::paramsWithoutRoute($data);
         }
+
+        // Sections cannot be nested inside sections or groups
+        $isSection = ! empty($data['section']);
+        $isGroup = ! empty($data['group']);
+
+        if (($isSection || $isGroup) && isset($data['children']) && is_array($data['children'])) {
+            foreach ($data['children'] as $child) {
+                if ($child instanceof ItemBuilder) {
+                    $child = $child->toArray();
+                }
+
+                if (is_array($child) && ! empty($child['section'])) {
+                    throw InvalidNavigationItemException::nestedSection($data, $isSection ? 'section' : 'group');
+                }
+            }
+        }
     }
 
     /**

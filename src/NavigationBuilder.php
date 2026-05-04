@@ -146,6 +146,24 @@ final class NavigationBuilder
     }
 
     /**
+     * Add a section containing items and groups.
+     *
+     * @param  string  $label  Section header label
+     * @param  array<int, array<string, mixed>|ItemBuilder>  $children  Items and groups in this section
+     * @param  string|null  $icon  Icon name
+     */
+    public function section(string $label, array $children = [], ?string $icon = null): self
+    {
+        $section = Item::section($label, $children);
+
+        if ($icon !== null) {
+            $section->icon($icon);
+        }
+
+        return $this->add($section);
+    }
+
+    /**
      * Add a separator.
      */
     public function separator(): self

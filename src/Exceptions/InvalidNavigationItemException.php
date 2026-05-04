@@ -101,6 +101,21 @@ final class InvalidNavigationItemException extends InvalidArgumentException
     }
 
     /**
+     * Thrown when a section is nested inside another section or a group.
+     *
+     * @param  array<string, mixed>  $item
+     */
+    public static function nestedSection(array $item, string $parentKind): self
+    {
+        return new self(
+            message: sprintf('Navigation sections cannot be nested inside a %s.', $parentKind),
+            item: $item,
+            suggestion: 'Sections are top-level structural containers. Place sections at the root of a navigation, and put items or groups inside them — not other sections.',
+            docsSection: '#sections'
+        );
+    }
+
+    /**
      * Thrown when an invalid HTTP method is specified.
      *
      * @param  array<string, mixed>  $item

@@ -13,6 +13,7 @@ active state detection, and pre-compiled icons — perfect for Inertia.js, React
 
 - **Multiple Navigations** — Define unlimited nav structures (main, footer, sidebar, user menu)
 - **Fluent Builder API** — IDE-friendly builder with full autocomplete support
+- **Sections & Groups** — Organize items with top-level sections and collapsible groups
 - **Route-Based** — Use Laravel route names with full IDE autocomplete
 - **Breadcrumb Generation** — Auto-generate breadcrumbs from your navigation config
 - **Active State Detection** — Smart detection of active items and their parents
@@ -92,7 +93,8 @@ return [
 
 Available helpers:
 - `nav_item($label, $route?, $icon?)` — Standard navigation item
-- `nav_group($label, $children?, $icon?)` — Collapsible group/section
+- `nav_group($label, $children?, $icon?)` — Collapsible group
+- `nav_section($label, $children?, $icon?)` — Top-level section containing items and groups
 - `nav_separator()` — Visual separator
 - `nav_divider($spacing?)` — Divider with optional spacing
 - `nav_external($label, $url, $icon?)` — External link
@@ -153,6 +155,12 @@ Navigation::register('sidebar')
         ->child('All Users', 'users.index')
         ->child('Create User', 'users.create')
     ->separator()
+    ->section('Admin', [
+        Item::make('Roles')->route('admin.roles'),
+        Item::group('Settings', [
+            Item::make('General')->route('settings.general'),
+        ]),
+    ], 'shield')
     ->item('Settings', 'settings', 'settings')
     ->done();
 
@@ -218,6 +226,17 @@ Item::separator()
 // Divider with spacing
 Item::divider('large')
 
+// Group (collapsible sub-menu)
+Item::group('Settings', [
+    Item::make('Profile')->route('settings.profile'),
+])
+
+// Section (top-level container for items and groups)
+Item::section('Workspace', [
+    Item::make('Dashboard')->route('dashboard'),
+    Item::group('Settings', [...]),
+])
+
 // With children
 Item::make('Settings')
     ->route('settings')
@@ -264,6 +283,10 @@ Item::make('Dashboard')
 ```
 
 ## Groups & Sections
+
+Use **groups** for collapsible sub-menus and **sections** for top-level structural containers that can hold both items and groups.
+
+### Groups
 
 Organize navigation items into collapsible groups with headers:
 
@@ -361,6 +384,115 @@ Groups output with these additional fields:
     'collapsible' => true,   // Can be collapsed
     'collapsed' => false,    // Default collapsed state
     'children' => [...],
+]
+```
+
+### Sections
+
+Sections are top-level structural containers that can hold both items and groups. They support all the same fluent options as groups but default to **non-collapsible** so they read as structural dividers (e.g., `WORKSPACE`, `ADMIN`).
+
+```php
+use OffloadProject\Navigation\Item;
+
+return [
+    'navigations' => [
+        'sidebar' => [
+            Item::section('Workspace', [
+                Item::make('Dashboard')->route('dashboard')->icon('home'),
+                Item::group('Settings', [
+                    Item::make('Profile')->route('settings.profile'),
+                    Item::make('Security')->route('settings.security'),
+                ])->icon('cog'),
+            ])->icon('layers'),
+
+            Item::section('Admin', [
+                Item::make('Users')->route('admin.users'),
+                Item::make('Roles')->route('admin.roles'),
+            ])->can('access-admin'),
+        ],
+    ],
+];
+```
+
+Or with helper functions:
+
+```php
+return [
+    'navigations' => [
+        'sidebar' => [
+            nav_section('Workspace', [
+                nav_item('Dashboard', 'dashboard', 'home'),
+                nav_group('Settings', [
+                    nav_item('Profile', 'settings.profile'),
+                    nav_item('Security', 'settings.security'),
+                ], 'cog'),
+            ], 'layers'),
+        ],
+    ],
+];
+```
+
+Or via the runtime builder:
+
+```php
+Navigation::register('sidebar')
+    ->section('Workspace', [
+        Item::make('Dashboard')->route('dashboard'),
+        Item::group('Settings', [
+            Item::make('Profile')->route('settings.profile'),
+        ]),
+    ])
+    ->done();
+```
+
+#### Section Options
+
+Sections support every option groups support — icons, gates, badges, custom meta, visibility, and (opt-in) collapsibility:
+
+```php
+// Default: non-collapsible structural divider
+Item::section('Workspace', [...])
+
+// Make it collapsible (and optionally start collapsed)
+Item::section('Advanced', [...])->collapsible()->collapsed()
+
+// With icon and authorization
+Item::section('Admin', [...])->icon('shield')->can('access-admin')
+
+// With a badge
+Item::section('Notifications', [...])->badge(3)
+```
+
+#### Nesting Rules
+
+Sections are top-level only. Nesting a section inside another section or inside a group throws `InvalidNavigationItemException`:
+
+```php
+// Not allowed — sections cannot be nested
+Item::section('Outer', [
+    Item::section('Inner', [...]),  // throws
+])
+
+// Not allowed — groups cannot contain sections
+Item::group('Settings', [
+    Item::section('Inner', [...]),  // throws
+])
+```
+
+#### Section Output
+
+Sections output with these additional fields:
+
+```php
+[
+    'id' => 'nav-sidebar-0',
+    'label' => 'Workspace',
+    'isActive' => true,       // Active if any child is active
+    'icon' => '<svg>...</svg>',
+    'section' => true,        // Identifies this as a section
+    'collapsible' => false,   // Defaults to false (opt in via ->collapsible())
+    'collapsed' => false,
+    'children' => [...],      // Items and/or groups
 ]
 ```
 

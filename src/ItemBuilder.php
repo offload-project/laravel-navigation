@@ -106,7 +106,6 @@ class ItemBuilder
      *     Item::make('Profile')->route('settings.profile'),
      *     Item::make('Security')->route('settings.security'),
      * ])
-     *
      * @example Item::group('Admin')
      *     ->icon('shield')
      *     ->collapsible()
@@ -118,6 +117,39 @@ class ItemBuilder
         $item = new static($label);
         $item->meta['group'] = true;
         $item->meta['collapsible'] = true;
+        $item->meta['collapsed'] = false;
+        $item->children = $children;
+
+        return $item;
+    }
+
+    /**
+     * Create a navigation section that groups items and groups under a header.
+     *
+     * Sections are top-level structural containers that can hold items and groups.
+     * They don't have routes — they're purely for organization. Unlike groups,
+     * sections default to non-collapsible (treated as a structural divider) but
+     * support all the same fluent options.
+     *
+     * @param  string  $label  Section header label
+     * @param  array<int, array<string, mixed>|ItemBuilder>  $children  Items and groups in this section
+     *
+     * @example Item::section('Workspace', [
+     *     Item::make('Dashboard')->route('dashboard'),
+     *     Item::group('Settings', [
+     *         Item::make('Profile')->route('settings.profile'),
+     *     ]),
+     * ])
+     * @example Item::section('Admin')
+     *     ->icon('shield')
+     *     ->collapsible()
+     *     ->children([...])
+     */
+    public static function section(string $label, array $children = []): static
+    {
+        $item = new static($label);
+        $item->meta['section'] = true;
+        $item->meta['collapsible'] = false;
         $item->meta['collapsed'] = false;
         $item->children = $children;
 
