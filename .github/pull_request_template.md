@@ -36,6 +36,5 @@ Describe the tests you ran to verify your changes (Pest tests, manual checks in 
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing tests pass locally with my changes
 - [ ] I have updated the README / docs where relevant
-- [ ] I have updated the CHANGELOG (if applicable)
 - [ ] My commit messages follow Conventional Commits
 - [ ] Any breaking changes are clearly called out above
