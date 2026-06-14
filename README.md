@@ -23,10 +23,42 @@ active state detection, and pre-compiled icons — perfect for Inertia.js, React
 - **Wildcard Parameters** — Match dynamic routes like `/users/{id}/edit` in breadcrumbs
 - **Custom Metadata** — Attach badges, feature flags, or any data to nav items
 
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+    - [Using the Fluent Builder](#using-the-fluent-builder-recommended)
+    - [Using Helper Functions](#using-helper-functions)
+    - [Using Shorthand Syntax](#using-shorthand-syntax)
+    - [Using Array Syntax](#using-array-syntax)
+- [Runtime Registration](#runtime-registration)
+- [Getting Navigation Data](#getting-navigation-data)
+- [Fluent Builder API](#fluent-builder-api)
+- [Groups & Sections](#groups--sections)
+- [Route Parameters](#route-parameters)
+- [Authorization](#authorization)
+- [Action Items](#action-items)
+- [Breadcrumbs & Wildcards](#breadcrumbs--wildcards)
+- [Visibility Control](#visibility-control)
+- [Custom Metadata](#custom-metadata)
+- [Icon Compilation](#icon-compilation)
+- [Route Validation](#route-validation)
+- [Inertia.js Integration](#inertiajs-integration)
+- [Output Format](#output-format)
+- [Configuration Reference](#configuration-reference)
+- [Error Messages](#error-messages)
+- [Migration Guide](#migration-guide)
+- [AI Coding Assistant Skill](#ai-coding-assistant-skill)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [Security](#security)
+- [License](#license)
+
 ## Requirements
 
 - PHP 8.3+
-- Laravel 11.0+
+- Laravel 11/12/13
 
 ## Installation
 
@@ -424,7 +456,6 @@ return [
                 nav_item('Dashboard', 'dashboard', 'home'),
                 nav_group('Settings', [
                     nav_item('Profile', 'settings.profile'),
-                    nav_item('Security', 'settings.security'),
                 ], 'cog'),
             ], 'layers'),
         ],
@@ -759,12 +790,33 @@ The following methods are deprecated and will be removed in v2.0:
 | `->toTree()` | `->items()` |
 | `->getBreadcrumbs()` | `->breadcrumbs()` |
 
+## AI Coding Assistant Skill
+
+This package ships a [Laravel Boost](https://skills.laravel.cloud/) skill so coding assistants (Claude Code, Cursor, etc.) follow the package's conventions when generating code. Install it in your app with:
+
+```bash
+php artisan boost:add-skill offload-project/laravel-navigation
+```
+
+The skill source lives at [`skills/SKILL.md`](skills/SKILL.md).
+
 ## Testing
 
 ```bash
-./vendor/bin/pest
+composer test
 ```
+
+## Contributing
+
+Contributions are welcome! Please see the documents below before getting started.
+
+- [Contributing Guide](CONTRIBUTING.md) — setup, workflow, commit conventions, and PR process
+- [Code of Conduct](CODE_OF_CONDUCT.md) — expectations for participation in this project
+
+## Security
+
+- [Security Policy](SECURITY.md) — how to report a vulnerability privately
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE) for more information.
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
