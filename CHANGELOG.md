@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.6.0 - 2026-06-14
+
+### Documentation
+- Update, add missing docs [#29](https://github.com/offload-project/laravel-navigation/pull/29)
+
+### Other
+- Exclude laravel 12, php 8.2 for guzzlehttp/promises bug, patched in later version ([4046d0b](https://github.com/offload-project/laravel-navigation/commit/4046d0b2fcb706ee0f72845f28d6221a1dab8bc5))
+- Exclude laravel 13, php 8.2 for guzzlehttp/promises bug, patched in later version ([92e16fb](https://github.com/offload-project/laravel-navigation/commit/92e16fbded18018a469552147fdcf68eeb4842d2))
+
 ## v1.5.0 - 2026-05-04
 
 ### Added
