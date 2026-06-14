@@ -1,10 +1,11 @@
-<p align="center">
-    <a href="https://packagist.org/packages/offload-project/laravel-navigation"><img src="https://img.shields.io/packagist/v/offload-project/laravel-navigation.svg?style=flat-square" alt="Latest Version on Packagist"></a>
-    <a href="https://github.com/offload-project/laravel-navigation/actions"><img src="https://img.shields.io/github/actions/workflow/status/offload-project/laravel-navigation/tests.yml?branch=main&style=flat-square" alt="GitHub Tests Action Status"></a>
-    <a href="https://packagist.org/packages/offload-project/laravel-navigation"><img src="https://img.shields.io/packagist/dt/offload-project/laravel-navigation.svg?style=flat-square" alt="Total Downloads"></a>
-</p>
-
 # Laravel Navigation
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/offload-project/laravel-navigation.svg?style=flat-square)](https://packagist.org/packages/offload-project/laravel-navigation)
+[![Tests](https://img.shields.io/github/actions/workflow/status/offload-project/laravel-navigation/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/offload-project/laravel-navigation/actions/workflows/tests.yml)
+[![Build](https://img.shields.io/github/actions/workflow/status/offload-project/laravel-navigation/release.yml?label=build&style=flat-square)](https://github.com/offload-project/laravel-navigation/actions/workflows/release.yml)
+[![Total Downloads](https://img.shields.io/packagist/dt/offload-project/laravel-navigation.svg?style=flat-square)](https://packagist.org/packages/offload-project/laravel-navigation)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)](LICENSE.md)
+
 
 A powerful, flexible navigation management package for Laravel. Define multiple navigation structures with breadcrumbs,
 active state detection, and pre-compiled icons — perfect for Inertia.js, React, Vue, and Blade applications.
