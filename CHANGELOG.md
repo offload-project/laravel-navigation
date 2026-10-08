@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.6.1 - 2026-10-08
+
+### Fixed
+- Compatibility with svg-sanitize [#31](https://github.com/offload-project/laravel-navigation/pull/31)
+
+### Documentation
+- Update badges ([a01eafc](https://github.com/offload-project/laravel-navigation/commit/a01eafc2b7c497c4a029071f3628404adade95b6))
+
 ## v1.6.0 - 2026-06-14
 
 ### Documentation
