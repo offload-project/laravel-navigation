@@ -249,6 +249,12 @@ final class Navigation implements NavigationInterface
             $node['url'] = $url;
         }
 
+        // Flag links that leave the app, so a frontend router knows not to
+        // take the visit. Custom metadata below can still override it.
+        if ($item->route === null && $this->isExternalUrl($item->url)) {
+            $node['external'] = true;
+        }
+
         // Add method if present
         if ($item->method !== null) {
             $node['method'] = $item->method;
@@ -279,6 +285,28 @@ final class Navigation implements NavigationInterface
         }
 
         return $item->url;
+    }
+
+    /**
+     * Whether a URL points away from the application: absolute, and on a host
+     * other than the one `app.url` names. Relative paths and fragments are
+     * internal.
+     */
+    private function isExternalUrl(?string $url): bool
+    {
+        if ($url === null) {
+            return false;
+        }
+
+        $host = parse_url($url, PHP_URL_HOST);
+
+        if (! is_string($host) || $host === '') {
+            return false;
+        }
+
+        $appHost = parse_url((string) config('app.url'), PHP_URL_HOST);
+
+        return ! is_string($appHost) || mb_strtolower($host) !== mb_strtolower($appHost);
     }
 
     /**

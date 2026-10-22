@@ -247,7 +247,9 @@ Item::make('Dashboard')->route('dashboard')->icon('home')
 // Shorthand with route and icon
 Item::to('Dashboard', 'dashboard', 'home')
 
-// External link
+// External link. Any `url` on a host other than `app.url` comes out of
+// toTree() with `'external' => true`, so the frontend can open it outside its
+// router (e.g. `target="_blank"`). Set `->meta('external', false)` to opt out.
 Item::external('Documentation', 'https://docs.example.com', 'book')
 
 // Action (POST/DELETE)

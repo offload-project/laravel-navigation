@@ -39,6 +39,36 @@ it('handles external URLs', function () {
     expect($tree[0]['url'])->toBe('https://docs.example.com');
 });
 
+it('flags a URL on another host as external', function () {
+    $navigation = $this->createNavigation('footer', $this->config['navigations']['footer']);
+    $tree = $navigation->toTree();
+
+    expect($tree[0]['external'])->toBeTrue();
+});
+
+it('does not flag routes or same-site URLs as external', function () {
+    config(['app.url' => 'https://app.example.com']);
+
+    $navigation = $this->createNavigation('mixed', [
+        ['label' => 'Home', 'route' => 'dashboard'],
+        ['label' => 'Anchor', 'url' => '/#section'],
+        ['label' => 'Absolute', 'url' => 'https://app.example.com/pricing'],
+    ]);
+    $tree = $navigation->toTree();
+
+    expect($tree[0])->not->toHaveKey('external')
+        ->and($tree[1])->not->toHaveKey('external')
+        ->and($tree[2])->not->toHaveKey('external');
+});
+
+it('lets metadata override the external flag', function () {
+    $navigation = $this->createNavigation('mixed', [
+        ['label' => 'Docs', 'url' => 'https://docs.example.com', 'external' => false],
+    ]);
+
+    expect($navigation->toTree()[0]['external'])->toBeFalse();
+});
+
 it('includes method for action items', function () {
     $navigation = $this->createNavigation('user_menu', $this->config['navigations']['user_menu']);
     $tree = $navigation->toTree();
