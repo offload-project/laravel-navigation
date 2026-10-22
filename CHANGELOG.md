@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.7.0 - 2026-10-22
+
+### Added
+- Add external url flag [#33](https://github.com/offload-project/laravel-navigation/pull/33)
+
 ## v1.6.1 - 2026-10-08
 
 ### Fixed
